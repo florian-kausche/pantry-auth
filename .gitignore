@@ -3,7 +3,8 @@ node_modules
 dist
 .env
 
+#devcontainer
 .devcontainer/
-.github/
+.github
 
 
