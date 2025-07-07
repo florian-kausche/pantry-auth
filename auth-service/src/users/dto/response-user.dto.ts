@@ -18,7 +18,4 @@ export class UserResponseBodyDto {
 
   @ApiProperty()
   token?: string;
-
-  @ApiProperty()
-  kktoken?: string;
 }
