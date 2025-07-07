@@ -1,30 +1,50 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsOptional, IsInt, Min, MinLength } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsInt,
+  Min,
+  MinLength,
+  IsBoolean,
+  IsNumber,
+} from 'class-validator';
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'Juan', description: 'Nombre del usuario' })
-  @IsString()
-  name: string;
-
-  @ApiProperty({ example: 'juan@gmail.com', description: 'Correo electrónico del usuario' })
+  @ApiProperty({ example: 'jhon@gmail.com', description: 'Email address' })
   @IsEmail()
   email: string;
 
-  @ApiProperty({ example: 25, description: 'Edad del usuario', required: false })
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  age?: number;
-  
-  @ApiProperty({ 
-    example: '12345678', 
-    description: 'Contraseña del usuario (mínimo 8 caracteres)', 
-    minLength: 8 
+  @ApiProperty({
+    example: 'l2345678',
+    description: 'Password(minimum 8 characters)',
+    minLength: 8,
   })
   @IsString()
   @MinLength(8)
   password: string;
 
+  @IsOptional()
+  @IsString()
+  ruku_client_id?: string;
 
+  @IsOptional()
+  @IsString()
+  suscription_id?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
+
+  @IsOptional()
+  @IsString()
+  addressId?: string;
+
+  @IsOptional()
+  @IsString()
+  token?: string;
+
+  @IsOptional()
+  @IsNumber()
+  expirationToken?: number;
 }
-

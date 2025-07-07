@@ -94,7 +94,7 @@ export class UsersService {
           `No se encontró un usuario con el email "${email}"`,
         );
       }
-      return user
+      return user;
     } catch (error) {
       console.error(`Error al buscar usuario por email: ${email}`, error);
       throw new InternalServerErrorException('Error al buscar el usuario');

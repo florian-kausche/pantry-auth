@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
 import { SecurityService } from './security.service';
 import { SecurityController } from './security.controller';
+import { TokenService } from 'src/users/token.service';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { SecurityController } from './security.controller';
       }),
     }),
   ],
-  providers: [SecurityService],
+  providers: [SecurityService, TokenService],
   controllers: [SecurityController],
 })
 export class SecurityModule {}
