@@ -9,6 +9,7 @@ import { UsersService } from '../users/users.service';
 import { TokenService } from 'src/users/token.service';
 import { LoginDto } from './dto/login.dto';
 import { UserResponseBodyDto } from 'src/users/dto/response-user.dto'; 
+import { SignupDto } from './dto/signup.dto';
 
 @Injectable()
 export class SecurityService {
@@ -19,7 +20,7 @@ export class SecurityService {
   ) {}
 
   async validateUser(email: string, password: string) {
-    const user = await this.usersService.findByEmail(email);
+    const user = await this.usersService.verifyUserExists(email);
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
@@ -46,5 +47,10 @@ export class SecurityService {
     }
   }
 
-
+  async signup(signupDto: SignupDto) {
+    const user = await this.usersService.create(signupDto);
+    return {
+      user
+    }
+  }
 }

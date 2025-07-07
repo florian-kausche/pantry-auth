@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -18,6 +19,8 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
+      await this.verifyEmailIsAvailable(createUserDto.email);
+
       const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
       const createdUser = new this.userModel({
         ...createUserDto,
@@ -26,7 +29,7 @@ export class UsersService {
       return await createdUser.save();
     } catch (error) {
       console.error('Error al crear usuario:', error);
-      throw new InternalServerErrorException('Error al crear el usuario');
+      throw error;
     }
   }
 
@@ -85,19 +88,39 @@ export class UsersService {
     }
   }
 
-  async findByEmail(email: string): Promise<UserDocument> {
-    try {
-      const user = await this.userModel.findOne({ email }).exec();
+  /**
+   * Method that is called in SECURITY.SERVICE for email validation during login.
+   * @param email 
+   * @returns 
+   */
+  async findByEmail(email: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ email }).exec();
+  }
 
-      if (!user) {
-        throw new NotFoundException(
-          `No se encontró un usuario con el email "${email}"`,
-        );
-      }
-      return user;
-    } catch (error) {
-      console.error(`Error al buscar usuario por email: ${email}`, error);
-      throw new InternalServerErrorException('Error al buscar el usuario');
+  /**
+   * Method for login
+   * @param email 
+   * @returns 
+   */
+  async verifyUserExists(email: string): Promise<UserDocument> {
+    const user = await this.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException(`No existe usuario con email: ${email}`);
+    }
+    return user;
+  }
+
+  /**
+   * Method for signup
+   * @param email 
+   */
+  async verifyEmailIsAvailable(email: string): Promise<void> {
+    const user = await this.findByEmail(email);
+    if (user) {
+      throw new ConflictException('Correo ya registrado');
     }
   }
+  
+  
+  
 }

@@ -4,6 +4,7 @@ import { ApiOperation } from '@nestjs/swagger';
 import { SecurityService } from './security.service';
 import { LoginDto } from './dto/login.dto';
 import { UserResponseBodyDto } from 'src/users/dto/response-user.dto';
+import { SignupDto } from './dto/signup.dto';
 
 @Controller('security')
 export class SecurityController {
@@ -14,5 +15,10 @@ export class SecurityController {
   async login(@Body() loginDto: LoginDto): Promise<UserResponseBodyDto> {
     const logged_in_user = this.securityService.login(loginDto);
     return logged_in_user;
+  }
+
+  @Post('signup')
+  async signUp(@Body() signupDto: SignupDto) {
+    return this.securityService.signup(signupDto);
   }
 }

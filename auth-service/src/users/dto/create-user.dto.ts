@@ -16,7 +16,7 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({
-    example: 'l2345678',
+    example: '12345678',
     description: 'Password(minimum 8 characters)',
     minLength: 8,
   })
