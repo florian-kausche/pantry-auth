@@ -12,11 +12,13 @@ export class EmailService {
   private sesClient?: SESClient;
   private fromAddress: string;
   private logOtp: boolean;
+  private sendDisabled: boolean;
 
   constructor(private readonly configService: ConfigService) {
     this.provider = (this.configService.get<string>('EMAIL_PROVIDER') as any) || 'smtp';
     this.fromAddress = this.configService.get<string>('EMAIL_FROM') || this.configService.get<string>('SENDGRID_FROM') || this.configService.get<string>('SMTP_FROM') || 'no-reply@example.com';
     this.logOtp = (this.configService.get<string>('EMAIL_LOG_OTP') || 'false') === 'true';
+    this.sendDisabled = (this.configService.get<string>('EMAIL_SEND_DISABLE') || 'false') === 'true';
 
     if (this.provider === 'smtp') {
       const host = this.configService.get<string>('SMTP_HOST');
@@ -33,8 +35,8 @@ export class EmailService {
         host,
         port,
         secure,
-        auth: { user, pass },
-      });
+        auth: user && pass ? { user, pass } : undefined,
+      } as any);
     } else if (this.provider === 'sendgrid') {
       const apiKey = this.configService.get<string>('SENDGRID_API_KEY');
       if (!apiKey) {
@@ -54,6 +56,11 @@ export class EmailService {
   async sendPasswordResetOtp(email: string, otp: string): Promise<void> {
     if (this.logOtp) {
       this.logger.warn(`DEV OTP for ${email}: ${otp}`);
+    }
+
+    if (this.sendDisabled) {
+      this.logger.log('EMAIL_SEND_DISABLE=true; skipping actual email send');
+      return;
     }
 
     const subject = 'Password Reset OTP';
