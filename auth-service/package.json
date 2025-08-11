@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "smoke:test": "node -r ts-node/register -r tsconfig-paths/register scripts/smoke-test.ts"
+    "smoke:test": "node -r ts-node/register -r tsconfig-paths/register scripts/smoke-test.ts",
+    "strip:comments": "ts-node --transpile-only scripts/remove-comments.ts"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.864.0",
@@ -42,6 +43,7 @@
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "strip-comments": "^2.0.1",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {

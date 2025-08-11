@@ -16,7 +16,7 @@ export class UsersModule implements OnModuleInit {
   constructor(private readonly usersService: UsersService) {}
 
   async onModuleInit() {
-    // Optional: Seed a test user for local testing
+    
     const email = process.env.SEED_USER_EMAIL;
     const password = process.env.SEED_USER_PASSWORD;
     if (!email || !password) return;
@@ -26,7 +26,7 @@ export class UsersModule implements OnModuleInit {
       const model: any = (this.usersService as any).userModel;
       const hashed = await bcrypt.hash(password, 10);
       await model.create({ email, password: hashed, isActive: true });
-      // eslint-disable-next-line no-console
+      
       console.log(`Seeded test user: ${email} / ${password}`);
     }
   }

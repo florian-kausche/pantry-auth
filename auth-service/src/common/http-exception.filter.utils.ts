@@ -17,7 +17,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     response.status(status).json({
       message,
       path_url: request.url,
-      //error: exception.stack,
+      
     });
   }
 }

@@ -54,7 +54,7 @@ export class SecurityService {
 
     const otp = this.generateOtp();
     const otpHash = await bcrypt.hash(otp, 10);
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); 
 
     user.passwordResetOtpHash = otpHash;
     user.passwordResetOtpExpiresAt = expiresAt;
@@ -78,7 +78,7 @@ export class SecurityService {
     }
 
     if (new Date() > new Date(user.passwordResetOtpExpiresAt)) {
-      // Expired
+      
       user.passwordResetOtpHash = undefined;
       user.passwordResetOtpExpiresAt = undefined;
       user.passwordResetOtpAttempts = 0;
@@ -122,7 +122,7 @@ export class SecurityService {
       throw new BadRequestException('Invalid or unverified reset request');
     }
 
-    // Verify token signature and expiry
+    
     let decoded: any;
     try {
       decoded = this.jwtService.verify(dto.token);
@@ -145,7 +145,7 @@ export class SecurityService {
     const hashedPassword = await bcrypt.hash(dto.newPassword, 10);
     user.password = hashedPassword;
 
-    // Clear reset state
+    
     user.passwordResetOtpHash = undefined;
     user.passwordResetOtpExpiresAt = undefined;
     user.passwordResetOtpAttempts = 0;
@@ -153,7 +153,7 @@ export class SecurityService {
     user.passwordResetToken = undefined;
     user.passwordResetTokenExpiresAt = undefined;
 
-    // Also log out existing sessions
+    
     user.token = '';
     user.expirationToken = new Date();
 
