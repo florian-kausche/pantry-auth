@@ -2,12 +2,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import * as sgMail from '@sendgrid/mail';
+import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 
 @Injectable()
 export class EmailService {
   private readonly logger = new Logger(EmailService.name);
-  private readonly provider: 'smtp' | 'sendgrid';
+  private readonly provider: 'smtp' | 'sendgrid' | 'ses';
   private transporter?: nodemailer.Transporter;
+  private sesClient?: SESClient;
   private fromAddress: string;
 
   constructor(private readonly configService: ConfigService) {
@@ -38,6 +40,12 @@ export class EmailService {
       } else {
         sgMail.setApiKey(apiKey);
       }
+    } else if (this.provider === 'ses') {
+      const region = this.configService.get<string>('AWS_REGION');
+      if (!region) {
+        this.logger.warn('SES is selected but AWS_REGION is not configured');
+      }
+      this.sesClient = new SESClient({ region });
     }
   }
 
@@ -69,6 +77,24 @@ export class EmailService {
         subject,
         html,
       } as any);
+      return;
+    }
+
+    if (this.provider === 'ses') {
+      if (!this.sesClient) {
+        throw new Error('SES client not configured');
+      }
+      const command = new SendEmailCommand({
+        Source: this.fromAddress,
+        Destination: { ToAddresses: [email] },
+        Message: {
+          Subject: { Data: subject, Charset: 'UTF-8' },
+          Body: {
+            Html: { Data: html, Charset: 'UTF-8' },
+          },
+        },
+      });
+      await this.sesClient.send(command);
       return;
     }
 

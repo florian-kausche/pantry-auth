@@ -53,6 +53,13 @@ Email provider (choose one):
   - EMAIL_FROM=Your Name <no-reply@yourdomain.com>
   - SENDGRID_API_KEY=your-sendgrid-api-key
 
+- For AWS SES
+  - EMAIL_PROVIDER=ses
+  - EMAIL_FROM=Your Name <no-reply@yourdomain.com>   # must be verified in SES
+  - AWS_REGION=us-east-1
+  - AWS_ACCESS_KEY_ID=AKIA...
+  - AWS_SECRET_ACCESS_KEY=...
+
 ## Run
 
 - npm install
@@ -61,6 +68,6 @@ Email provider (choose one):
 Open Swagger at /api for docs.
 
 ## Notes
-- Swap `EMAIL_PROVIDER` to switch between SMTP and SendGrid.
+- Swap `EMAIL_PROVIDER` to switch between SMTP, SendGrid, or SES.
 - User schema includes fields to store OTP hash, attempts, expiry, and reset token state.
 - Token invalidation is handled by clearing the persisted token; integrate with your auth middleware accordingly.
