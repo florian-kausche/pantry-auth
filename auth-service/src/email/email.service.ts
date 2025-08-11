@@ -11,10 +11,12 @@ export class EmailService {
   private transporter?: nodemailer.Transporter;
   private sesClient?: SESClient;
   private fromAddress: string;
+  private logOtp: boolean;
 
   constructor(private readonly configService: ConfigService) {
     this.provider = (this.configService.get<string>('EMAIL_PROVIDER') as any) || 'smtp';
     this.fromAddress = this.configService.get<string>('EMAIL_FROM') || this.configService.get<string>('SENDGRID_FROM') || this.configService.get<string>('SMTP_FROM') || 'no-reply@example.com';
+    this.logOtp = (this.configService.get<string>('EMAIL_LOG_OTP') || 'false') === 'true';
 
     if (this.provider === 'smtp') {
       const host = this.configService.get<string>('SMTP_HOST');
@@ -50,6 +52,10 @@ export class EmailService {
   }
 
   async sendPasswordResetOtp(email: string, otp: string): Promise<void> {
+    if (this.logOtp) {
+      this.logger.warn(`DEV OTP for ${email}: ${otp}`);
+    }
+
     const subject = 'Password Reset OTP';
     const html = `
       <h2>Password Reset</h2>

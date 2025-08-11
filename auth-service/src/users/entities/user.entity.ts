@@ -9,7 +9,7 @@ export type UserDocument = User & Document;
 export class User {
   
   @ApiProperty({ example: 'juan@mail.com', description: 'enter email' })
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, index: true })
   email: string;
 
   @ApiProperty({ example: 'phone', description: 'enter phone number' })

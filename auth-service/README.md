@@ -60,12 +60,26 @@ Email provider (choose one):
   - AWS_ACCESS_KEY_ID=AKIA...
   - AWS_SECRET_ACCESS_KEY=...
 
+Testing helpers (optional):
+
+- EMAIL_LOG_OTP=true                # also logs OTP to console for easy testing
+- SEED_USER_EMAIL=demo@example.com  # seeds a user on boot
+- SEED_USER_PASSWORD=Password123    # seeds a user on boot
+
 ## Run
 
 - npm install
 - npm run start:dev
 
 Open Swagger at /api for docs.
+
+### Quick test flow
+
+1) Seed a user by setting SEED_USER_EMAIL and SEED_USER_PASSWORD in .env and start the app
+2) POST /security/password-reset/request with { email: SEED_USER_EMAIL }
+3) Get OTP from email (or console if EMAIL_LOG_OTP=true)
+4) POST /security/password-reset/verify-otp with { email, otp } -> receive token
+5) POST /security/password-reset/reset with { email, token, newPassword }
 
 ## Notes
 - Swap `EMAIL_PROVIDER` to switch between SMTP, SendGrid, or SES.
