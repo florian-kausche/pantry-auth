@@ -155,7 +155,7 @@ export class SecurityService {
 
     // Also log out existing sessions
     user.token = '';
-    user.expirationToken = Date.now();
+    user.expirationToken = new Date();
 
     await user.save();
 

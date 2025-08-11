@@ -36,7 +36,7 @@ export class User {
   token: string;
 
   @Prop()
-  expirationToken: number; 
+  expirationToken: Date; 
 
   @Prop()
   createdAt: Date;
