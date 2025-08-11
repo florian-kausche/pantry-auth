@@ -10,11 +10,11 @@ import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 
 import { UsersService } from '../users/users.service';
-import { TokenService } from 'src/users/token.service';
+import { TokenService } from '../users/token.service';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
-import { EmailService } from 'src/email/email.service';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class SecurityService {

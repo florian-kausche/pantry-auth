@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { UpdateTokenDto } from 'src/security/dto/update-token.dto';
+import { UpdateTokenDto } from '../security/dto/update-token.dto';
 import { User, UserDocument } from './entities/user.entity';
-import { assertValidMongoId } from 'src/common/mongo-validation.common';
+import { assertValidMongoId } from '../common/mongo-validation.common';
 
 @Injectable()
 export class TokenService {
