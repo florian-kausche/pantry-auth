@@ -37,6 +37,22 @@ Create a .env with:
 - JWT_SECRET=replace-with-strong-secret
 - PORT=3000
 
+Email provider (choose one):
+
+- For SMTP
+  - EMAIL_PROVIDER=smtp
+  - EMAIL_FROM=Your Name <no-reply@yourdomain.com>
+  - SMTP_HOST=smtp.yourprovider.com
+  - SMTP_PORT=587
+  - SMTP_SECURE=false    # true for port 465
+  - SMTP_USER=your-smtp-username
+  - SMTP_PASS=your-smtp-password
+
+- For SendGrid
+  - EMAIL_PROVIDER=sendgrid
+  - EMAIL_FROM=Your Name <no-reply@yourdomain.com>
+  - SENDGRID_API_KEY=your-sendgrid-api-key
+
 ## Run
 
 - npm install
@@ -45,6 +61,6 @@ Create a .env with:
 Open Swagger at /api for docs.
 
 ## Notes
-- Replace EmailService with a real provider (SES/SendGrid). The current implementation logs OTPs to console for development.
+- Swap `EMAIL_PROVIDER` to switch between SMTP and SendGrid.
 - User schema includes fields to store OTP hash, attempts, expiry, and reset token state.
 - Token invalidation is handled by clearing the persisted token; integrate with your auth middleware accordingly.
