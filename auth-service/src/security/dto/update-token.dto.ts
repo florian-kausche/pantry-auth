@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsDate } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class UpdateTokenDto {
   @ApiProperty({ example: 'jwt_token_here', description: 'JWT access token' })

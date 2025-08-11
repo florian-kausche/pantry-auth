@@ -10,14 +10,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
-  app.useGlobalPipes(new ValidationPipe()); //Para uso Global validador
+  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Users API')
-    .setDescription('API para gestionar usuarios')
+    .setTitle('Auth API')
+    .setDescription('Logout and Password Recovery (OTP) endpoints')
     .setVersion('1.0')
-    .addTag('users')
+    .addTag('security')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -26,9 +26,9 @@ async function bootstrap() {
   try {
     const port = configService.get<number>('PORT') ?? 3000;
     await app.listen(port);
-    console.log(`Aplicación iniciada en el puerto ${port}`);
+    console.log(`Server running on port ${port}`);
   } catch (error) {
-    console.error('Error al iniciar la aplicación:', error.message);
+    console.error('Error starting application:', error.message);
   }
 }
 bootstrap();
