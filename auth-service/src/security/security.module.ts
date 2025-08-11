@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { SecurityService } from './security.service';
 import { SecurityController } from './security.controller';
 import { TokenService } from 'src/users/token.service';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TokenService } from 'src/users/token.service';
         signOptions: { expiresIn: '1h' },
       }),
     }),
+    EmailModule,
   ],
   providers: [SecurityService, TokenService],
   controllers: [SecurityController],

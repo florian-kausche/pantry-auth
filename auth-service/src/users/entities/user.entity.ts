@@ -43,6 +43,24 @@ export class User {
 
   @Prop()
   updatedAt: Date;
+
+  @Prop({ required: false })
+  passwordResetOtpHash?: string;
+
+  @Prop({ required: false })
+  passwordResetOtpExpiresAt?: Date;
+
+  @Prop({ required: false, default: 0 })
+  passwordResetOtpAttempts?: number;
+
+  @Prop({ required: false, default: false })
+  passwordResetVerified?: boolean;
+
+  @Prop({ required: false })
+  passwordResetToken?: string;
+
+  @Prop({ required: false })
+  passwordResetTokenExpiresAt?: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
